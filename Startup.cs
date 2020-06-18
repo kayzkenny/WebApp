@@ -32,6 +32,7 @@ namespace WebApp
                 opts.EnableSensitiveDataLogging(true);
             });
             services.AddControllers();
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
