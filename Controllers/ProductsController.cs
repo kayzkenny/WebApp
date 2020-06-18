@@ -24,16 +24,23 @@ namespace WebApp.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<Product> GetProduct(long id)
+        public async Task<IActionResult> GetProduct(long id)
         {
-            return await context.Products.FindAsync(id);
+            Product p = await context.Products.FindAsync(id);
+            if(p == null)
+            {
+                return NotFound();
+            }
+            return Ok(p);
         }
 
         [HttpPost]
-        public async Task SaveProduct([FromBody] ProductBindingTarget target)
+        public async Task<IActionResult> SaveProduct([FromBody] ProductBindingTarget target)
         {
-            await context.Products.AddAsync(target.ToProduct());
+            Product p = target.ToProduct();
+            await context.Products.AddAsync(p);
             await context.SaveChangesAsync();
+            return Ok(p);
         }
 
         [HttpPut]
@@ -50,6 +57,12 @@ namespace WebApp.Controllers
                 new Product() { ProductId = id}
             );
             await context.SaveChangesAsync();
+        }
+
+        [HttpGet("redirect")]
+        public IActionResult Redirect()
+        {
+            return RedirectToAction(nameof(GetProduct), new { Id = 1 });
         }
     }
 }
