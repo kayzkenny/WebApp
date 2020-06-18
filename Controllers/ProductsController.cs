@@ -32,7 +32,14 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
-            return Ok(p);
+            return Ok(new
+            {
+                ProductId = p.ProductId,
+                Name = p.Name,
+                Price = p.Price,
+                CategoryId = p.CategoryId,
+                SupplierId = p.SupplierId
+            });
         }
 
         [HttpPost]
